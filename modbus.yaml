@@ -1,0 +1,516 @@
+# Proxon Modbus   
+- name: proxon 
+  type: tcp
+  host: 192.168.178.99
+  port: 26
+  switches:
+    # Heizung
+    - name: "Proxon Heizelemente Global"
+      unique_id: proxon_heizelemente_global
+      scan_interval: 15
+      slave: 41
+      address: 325
+      verify:
+        delay: 1
+    - name: "Proxon Heizelement Wohnzimmer"
+      unique_id: proxon_heizelement_wohnzimmer
+      slave: 41
+      address: 187
+      scan_interval: 15
+      verify:
+        delay: 1
+      
+    - name: "Proxon Heizelement Flur"
+      unique_id: proxon_heizelement_flur
+      slave: 41
+      address: 254
+      scan_interval: 15
+      verify:
+        delay: 1
+    
+    - name: "Proxon Heizelement Buero"
+      unique_id: proxon_heizelement_buero
+      slave: 41
+      address: 255
+      scan_interval: 15
+      verify:
+        delay: 1
+        
+    - name: "Proxon Heizelement Schlafzimmer"
+      unique_id: proxon_heizelement_schlafzimmer
+      slave: 41
+      address: 256
+      scan_interval: 15
+      verify:
+        delay: 1
+        
+    - name: "Proxon Heizelement Eline"
+      unique_id: proxon_heizelement_eline
+      slave: 41
+      address: 253
+      scan_interval: 15
+      verify:
+        delay: 1
+    
+    - name: "Proxon Heizelement Lean"
+      unique_id: proxon_heizelement_lean
+      slave: 41
+      address: 258
+      scan_interval: 15
+      verify:
+        delay: 1
+    
+    - name: "Proxon Heizelement Hobbyraum"
+      unique_id: proxon_heizelement_hobbyraum
+      slave: 41
+      address: 259
+      scan_interval: 15
+      verify:
+        delay: 1
+        
+    - name: "Proxon Kuehlung"
+      unique_id: proxon_kuehlung
+      slave: 41
+      address: 62
+      scan_interval: 15
+      verify:
+        delay: 1
+    #T300
+    - name: "Proxon Heizstab"
+      unique_id: proxon_heizstab
+      slave: 41
+      address: 2001
+      scan_interval: 15
+      verify:
+        delay: 1
+        
+    - name: "Proxon Tastensperre Eline"
+      unique_id: proxon_tastensperre_eline
+      slave: 41
+      address: 273
+      scan_interval: 15
+      verify:
+        delay: 1
+        
+    - name: "Proxon Tastensperre Flur"
+      unique_id: proxon_tastensperre_flur
+      slave: 41
+      address: 274
+      scan_interval: 15
+      verify:
+        delay: 1
+        
+    - name: "Proxon Tastensperre Buero"
+      unique_id: proxon_tastensperre_buero
+      slave: 41
+      address: 275
+      scan_interval: 15
+      verify:
+        delay: 1
+        
+    - name: "Proxon Tastensperre Schlafzimmer"
+      unique_id: proxon_tastensperre_schlafzimmer
+      slave: 41
+      address: 276
+      scan_interval: 15
+      verify:
+        delay: 1
+        
+    - name: "Proxon Tastensperre Lean"
+      unique_id: proxon_tastensperre_lean
+      slave: 41
+      address: 278
+      scan_interval: 15
+      verify:
+        delay: 1
+        
+    - name: "Proxon Tastensperre Hobbyraum"
+      unique_id: proxon_tastensperre_hobbyraum
+      slave: 41
+      address: 279
+      scan_interval: 15
+      verify:
+        delay: 1
+        
+  sensors:
+    # Ist Temperaturen
+    - name: "Proxon Ist-Temperatur Wohnzimmer"
+      unique_id: proxon_ist_temperatur_wohnzimmer
+      scan_interval: 15
+      slave: 41
+      address: 41
+      input_type: input
+      unit_of_measurement: °C
+      scale: 0.01
+      precision: 1
+      data_type: int16
+      
+    - name: "Proxon Ist-Temperatur Schlafzimmer"
+      unique_id: proxon_ist_temperatur_schlafzimmer
+      scan_interval: 15
+      slave: 41
+      address: 599
+      input_type: input
+      unit_of_measurement: °C
+      scale: 0.1
+      precision: 1
+      data_type: int16
+    
+    - name: "Proxon Ist-Temperatur Eline"
+      unique_id: proxon_ist_temperatur_eline
+      scan_interval: 15
+      slave: 41
+      address: 590
+      input_type: input
+      unit_of_measurement: °C
+      scale: 0.1
+      precision: 1
+      data_type: int16
+    
+    - name: "Proxon Ist-Temperatur Lean"
+      unique_id: proxon_ist_temperatur_lean
+      scan_interval: 15
+      slave: 41
+      address: 605
+      input_type: input
+      unit_of_measurement: °C
+      scale: 0.1
+      precision: 1
+      data_type: int16
+      
+    - name: "Proxon Ist-Temperatur Buero"
+      unique_id: proxon_ist_temperatur_buero
+      scan_interval: 15
+      slave: 41
+      address: 596
+      input_type: input
+      unit_of_measurement: °C
+      scale: 0.1
+      precision: 1
+      data_type: int16
+      
+    - name: "Proxon Ist-Temperatur EG Flur"
+      unique_id: proxon_ist_temperatur_eg_flur
+      scan_interval: 15
+      slave: 41
+      address: 593
+      input_type: input
+      unit_of_measurement: °C
+      scale: 0.1
+      precision: 1
+      data_type: int16
+     
+    - name: "Proxon Ist-Temperatur Hobbyraum"
+      unique_id: proxon_ist_temperatur_eg_hobbyraum
+      scan_interval: 15
+      slave: 41
+      address: 608
+      input_type: input
+      unit_of_measurement: °C
+      scale: 0.1
+      precision: 1
+      data_type: int16
+      
+    # Offset Temperaturen
+    - name: "Proxon Offsettemperatur Schlafzimmer"
+      unique_id: proxon_offsettemperatur_schlafzimmer
+      scan_interval: 15
+      slave: 41
+      address: 216
+      input_type: holding
+      data_type: int16
+      
+    - name: "Proxon Offsettemperatur EG Flur"
+      unique_id: proxon_offsettemperatur_eg_flur
+      scan_interval: 15
+      slave: 41
+      address: 214
+      input_type: holding
+      data_type: int16  
+    
+    - name: "Proxon Offsettemperatur Wohnzimmer"
+      unique_id: proxon_offsettemperatur_wohnzimmer
+      scan_interval: 15
+      slave: 41
+      address: 70
+      scale: 0.01
+      precision: 1
+      input_type: holding
+      data_type: int16
+      
+    - name: "Proxon Offsettemperatur Buero"
+      unique_id: proxon_offsettemperatur_buero
+      scan_interval: 15
+      slave: 41
+      address: 215
+      input_type: holding
+      data_type: int16
+      
+    - name: "Proxon Offsettemperatur Lean"
+      unique_id: proxon_offsettemperatur_lean
+      scan_interval: 15
+      slave: 41
+      address: 218
+      input_type: holding
+      data_type: int16
+      
+    - name: "Proxon Offsettemperatur Eline"
+      unique_id: proxon_offsettemperatur_eline
+      scan_interval: 15
+      slave: 41
+      address: 213
+      input_type: holding
+      data_type: int16
+    
+    - name: "Proxon Offsettemperatur Hobbyraum"
+      unique_id: proxon_offsettemperatur_hobbyraum
+      scan_interval: 15
+      slave: 41
+      address: 219
+      input_type: holding
+      data_type: int16
+      
+    #Mitteltemperatur
+    - name: "Proxon Mitteltemperatur EG Flur"
+      unique_id: proxon_mitteltemperatur_eg_flur
+      scan_interval: 15
+      slave: 41
+      address: 234
+      input_type: holding
+      data_type: int16  
+    
+    - name: "Proxon Mitteltemperatur Buero"
+      unique_id: proxon_mitteltemperatur_buero
+      scan_interval: 15
+      slave: 41
+      address: 235
+      input_type: holding
+      data_type: int16
+      
+    - name: "Proxon Mitteltemperatur Lean"
+      unique_id: proxon_mitteltemperatur_lean
+      scan_interval: 15
+      slave: 41
+      address: 238
+      input_type: holding
+      data_type: int16
+      
+    - name: "Proxon Mitteltemperatur Eline"
+      unique_id: proxon_mitteltemperatur_eline
+      scan_interval: 15
+      slave: 41
+      address: 233
+      input_type: holding
+      data_type: int16
+      
+    - name: "Proxon Mitteltemperatur Hobbyraum"
+      unique_id: proxon_mitteltemperatur_hobbyraum
+      scan_interval: 15
+      slave: 41
+      address: 239
+      input_type: holding
+      data_type: int16
+    
+    - name: "Proxon Mitteltemperatur Schlafzimmer"
+      unique_id: proxon_mitteltemperatur_schlafzimmer
+      scan_interval: 15
+      slave: 41
+      address: 236
+      input_type: holding
+      data_type: int16  
+      
+    - name: "Proxon Betriebsart"
+      unique_id: proxon_betriebsart
+      scan_interval: 15
+      slave: 41
+      address: 16
+      input_type: holding
+      data_type: uint16
+      
+    - name: "Proxon Lüfterstufe"
+      unique_id: proxon_luefterstufe
+      scan_interval: 15
+      slave: 41
+      address: 22
+      input_type: holding
+      data_type: uint16
+      
+    - name: "Proxon Temperatur Frischluft"
+      unique_id: proxon_temperatur_frischluft
+      scan_interval: 15
+      slave: 41
+      address: 198
+      input_type: input
+      unit_of_measurement: °C
+      scale: 0.01
+      precision: 1
+      data_type: int16
+      
+    - name: "Proxon Temperatur Zuluft"
+      unique_id: proxon_temperatur_zuluft
+      scan_interval: 15
+      slave: 41
+      address: 195
+      input_type: input
+      unit_of_measurement: °C
+      scale: 0.01
+      precision: 1
+      data_type: int16
+      
+    - name: "Proxon Temperatur Fortluft"
+      unique_id: proxon_temperatur_fortluft
+      scan_interval: 15
+      slave: 41
+      address: 197
+      input_type: input
+      unit_of_measurement: °C
+      scale: 0.01
+      precision: 1
+      data_type: int16
+      
+    - name: "Proxon Temperatur Abluft"
+      unique_id: proxon_temperatur_abluft
+      scan_interval: 15
+      slave: 41
+      address: 196
+      input_type: input
+      unit_of_measurement: °C
+      scale: 0.01
+      precision: 1
+      data_type: int16
+      
+    - name: "Proxon CO2 Wohnzimmer"
+      unique_id: proxon_co2_wohnzimmer
+      scan_interval: 15
+      slave: 41
+      address: 21
+      input_type: input
+      device_class: aqi
+      unit_of_measurement: ppm
+      data_type: int16 #das muss noch verifiziert werden
+      
+    - name: "Proxon Luftfeuchte Wohnzimmer"
+      unique_id: proxon_luftfeuchte_wohnzimmer
+      scan_interval: 15
+      slave: 41
+      address: 22
+      input_type: input
+      device_class: humidity
+      unit_of_measurement: "%"
+      data_type: int16 #das muss noch verifiziert werden
+      
+    - name: "Proxon Lüftungsstufe Ventilator Zuluft"
+      unique_id: proxon_lueftungsstufe_ventilator_zuluft
+      scan_interval: 15
+      slave: 41
+      address: 154
+      input_type: input
+      data_type: int16
+      
+    - name: "Proxon aktueller Betrieb"
+      unique_id: proxon_akteller_betrieb
+      scan_interval: 15
+      slave: 41
+      address: 241
+      input_type: input
+      data_type: int16
+      
+    #T300
+    - name: "Proxon Ist-Temperatur Wasser"
+      unique_id: proxon_ist_temperatur_wasser
+      scan_interval: 15
+      slave: 41
+      address: 814
+      input_type: input
+      scale: 0.1
+      offset: -100
+      precision: 1
+      unit_of_measurement: °C
+      data_type: uint16
+
+    - name: "Proxon Soll-Temperatur Wasser"
+      unique_id: proxon_soll_temperatur_wasser
+      scan_interval: 15
+      slave: 41
+      address: 2000
+      input_type: holding
+      scale: 0.1
+      precision: 1
+      unit_of_measurement: °C
+      data_type: uint16
+      
+    - name: "Proxon Temperatur Wasser Unten"
+      unique_id: proxon_ist_temperatur_wasser_unten
+      scan_interval: 15
+      slave: 41
+      address: 813
+      input_type: input
+      scale: 0.1
+      offset: -100
+      precision: 1
+      unit_of_measurement: °C
+      data_type: uint16
+      
+    - name: "Proxon Heizstab Temperatur"
+      unique_id: proxon_heizstab_temperatur
+      scan_interval: 15
+      slave: 41
+      address: 2003
+      input_type: holding
+      scale: 0.1
+      precision: 1
+      unit_of_measurement: °C
+      data_type: uint16
+    
+    - name: "Proxon Standzeit FWT Gerätefilter"
+      unique_id: proxon_standzeit_fwt_geraetefilter
+      scan_interval: 30
+      slave: 41
+      address: 460
+      input_type: holding
+      device_class: duration
+      unit_of_measurement: d
+      data_type: uint16
+      
+    - name: "Proxon Nutzzeit FWT Gerätefilter"
+      unique_id: proxon_nutzzeit_fwt_geraetefilter
+      scan_interval: 30
+      slave: 41
+      address: 469
+      input_type: holding
+      unit_of_measurement: std
+      data_type: uint16
+      
+    - name: "Proxon Intensivlüftung Restzeit"
+      unique_id: proxon_intensivlueftung_restzeit
+      scan_interval: 15
+      slave: 41
+      address: 133
+      input_type: holding
+      unit_of_measurement: min
+      data_type: uint16
+      
+    - name: "Proxon Intensivlüftung Sollzeit"
+      unique_id: proxon_intensivlueftung_sollzeit
+      scan_interval: 15
+      slave: 41
+      address: 189
+      input_type: holding
+      unit_of_measurement: min
+      data_type: uint16
+      
+  binary_sensors:
+    #T300
+    - name: "Proxon Heizstab Status"
+      unique_id: proxon_heizstab_status
+      scan_interval: 15
+      slave: 41
+      address: 826
+      input_type: input
+    
+    - name: "Proxon Kompressor Status"
+      unique_id: proxon_kompressor_status
+      scan_interval: 15
+      slave: 41
+      address: 824
+      input_type: input

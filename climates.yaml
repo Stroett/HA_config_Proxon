@@ -1,0 +1,244 @@
+- platform: climate_template
+  name: Proxon Template Heizung Wohnzimmer
+  unique_id: proxon_template_heizung_wohnzimmer
+  modes:
+    - "auto"  
+    - "heat"
+  max_temp: 30
+  min_temp: 10
+  current_temperature_template: "{{ states('sensor.proxon_ist_temperatur_wohnzimmer') }}"
+  current_humidity_template: "{{ states('sensor.proxon_luftfeuchte_wohnzimmer') }}"
+  set_temperature: 
+    - service: modbus.write_register
+      data_template:
+        hub: proxon
+        unit: 41
+        address: 70
+        value: "{{ (state_attr('climate.proxon_template_heizung_wohnzimmer', 'temperature') | int)*100}}"
+  set_hvac_mode:
+    - service: >
+        {% if is_state('climate.proxon_template_heizung_wohnzimmer', 'auto') %}
+        switch.turn_off
+        {% elif is_state('climate.proxon_template_heizung_wohnzimmer', 'heat') %}
+        switch.turn_on
+        {% else %}
+        switch.turn_off
+        {% endif %}
+      entity_id: switch.proxon_heizelement_wohnzimmer
+
+- platform: climate_template
+  name: Proxon Template Heizung Schlafzimmer
+  unique_id: proxon_template_heizung_schlafzimmer
+  modes:
+    - "auto"  
+    - "heat"
+  max_temp: 23
+  min_temp: 17
+  current_temperature_template: "{{ states('sensor.proxon_ist_temperatur_schlafzimmer') }}"
+  set_temperature: 
+    - service: modbus.write_register
+      data_template:
+        hub: proxon
+        unit: 41
+        address: 216
+        value: > 
+          {% if ((state_attr('climate.proxon_template_heizung_schlafzimmer', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_schlafzimmer') | int)) == -3 %}
+          65533
+          {% elif ((state_attr('climate.proxon_template_heizung_schlafzimmer', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_schlafzimmer') | int)) == -2 %}
+          65534
+          {% elif ((state_attr('climate.proxon_template_heizung_schlafzimmer', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_schlafzimmer') | int)) == -1 %}
+          65535
+          {% else %}
+          {{ ((state_attr('climate.proxon_template_heizung_schlafzimmer', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_schlafzimmer') | int)) }}
+          {% endif %}
+  set_hvac_mode:
+    - service: >
+        {% if is_state('climate.proxon_template_heizung_schlafzimmer', 'auto') %}
+        switch.turn_off
+        {% elif is_state('climate.proxon_template_heizung_schlafzimmer', 'heat') %}
+        switch.turn_on
+        {% else %}
+        switch.turn_off
+        {% endif %}
+      entity_id: switch.heizelement_schlafzimmer
+    
+- platform: climate_template
+  name: Proxon Template Heizung Eline
+  unique_id: proxon_template_heizung_eline
+  modes:
+    - "auto"  
+    - "heat"
+  max_temp: 23
+  min_temp: 17
+  current_temperature_template: "{{ states('sensor.proxon_ist_temperatur_eline') }}"
+  set_temperature: 
+    - service: modbus.write_register
+      data_template:
+        hub: proxon
+        unit: 41
+        address: 213
+        value: > 
+          {% if ((state_attr('climate.proxon_template_heizung_eline', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_eline') | int)) == -3 %}
+          65533
+          {% elif ((state_attr('climate.proxon_template_heizung_eline', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_eline') | int)) == -2 %}
+          65534
+          {% elif ((state_attr('climate.proxon_template_heizung_eline', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_eline') | int)) == -1 %}
+          65535
+          {% else %}
+          {{ ((state_attr('climate.proxon_template_heizung_eline', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_eline') | int)) }}
+          {% endif %}
+  set_hvac_mode:
+    - service: >
+        {% if is_state('climate.proxon_template_heizung_eline', 'auto') %}
+        switch.turn_off
+        {% elif is_state('climate.proxon_template_heizung_eline', 'heat') %}
+        switch.turn_on
+        {% else %}
+        switch.turn_off
+        {% endif %}
+      entity_id: switch.proxon_heizelement_eline
+      
+- platform: climate_template
+  name: Proxon Template Heizung Lean
+  unique_id: proxon_template_heizung_lean
+  modes:
+    - "auto"  
+    - "heat"
+  max_temp: 23
+  min_temp: 17
+  current_temperature_template: "{{ states('sensor.proxon_ist_temperatur_lean') }}"
+  set_temperature: 
+    - service: modbus.write_register
+      data_template:
+        hub: proxon
+        unit: 41
+        address: 218
+        value: > 
+          {% if ((state_attr('climate.proxon_template_heizung_lean', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_lean') | int)) == -3 %}
+          65533
+          {% elif ((state_attr('climate.proxon_template_heizung_lean', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_lean') | int)) == -2 %}
+          65534
+          {% elif ((state_attr('climate.proxon_template_heizung_lean', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_lean') | int)) == -1 %}
+          65535
+          {% else %}
+          {{ ((state_attr('climate.proxon_template_heizung_lean', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_lean') | int)) }}
+          {% endif %}
+  set_hvac_mode:
+    - service: >
+        {% if is_state('climate.proxon_template_heizung_lean', 'auto') %}
+        switch.turn_off
+        {% elif is_state('climate.proxon_template_heizung_lean', 'heat') %}
+        switch.turn_on
+        {% else %}
+        switch.turn_off
+        {% endif %}
+      entity_id: switch.proxon_heizelement_lean
+
+- platform: climate_template
+  name: Proxon Template Heizung Buero
+  unique_id: proxon_template_heizung_buero
+  modes:
+    - "auto"  
+    - "heat"
+  max_temp: 23
+  min_temp: 17
+  current_temperature_template: "{{ states('sensor.proxon_ist_temperatur_buero') }}"
+  set_temperature: 
+    - service: modbus.write_register
+      data_template:
+        hub: proxon
+        unit: 41
+        address: 215
+        value: > 
+          {% if ((state_attr('climate.proxon_template_heizung_buero', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_buero') | int)) == -3 %}
+          65533
+          {% elif ((state_attr('climate.proxon_template_heizung_buero', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_buero') | int)) == -2 %}
+          65534
+          {% elif ((state_attr('climate.proxon_template_heizung_buero', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_buero') | int)) == -1 %}
+          65535
+          {% else %}
+          {{ ((state_attr('climate.proxon_template_heizung_buero', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_buero') | int)) }}
+          {% endif %}
+  set_hvac_mode:
+    - service: >
+        {% if is_state('climate.proxon_template_heizung_buero', 'auto') %}
+        switch.turn_off
+        {% elif is_state('climate.proxon_template_heizung_buero', 'heat') %}
+        switch.turn_on
+        {% else %}
+        switch.turn_off
+        {% endif %}
+      entity_id: switch.proxon_heizelement_buero
+
+- platform: climate_template
+  name: Proxon Template Heizung EG Flur
+  unique_id: proxon_template_heizung_eg_flur
+  modes:
+    - "auto"  
+    - "heat"
+  max_temp: 23
+  min_temp: 17
+  current_temperature_template: "{{ states('sensor.proxon_ist_temperatur_eg_flur') }}"
+  set_temperature: 
+    - service: modbus.write_register
+      data_template:
+        hub: proxon
+        unit: 41
+        address: 214
+        value: > 
+          {% if ((state_attr('climate.proxon_template_heizung_eg_flur', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_eg_flur') | int)) == -3 %}
+          65533
+          {% elif ((state_attr('climate.proxon_template_heizung_eg_flur', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_eg_flur') | int)) == -2 %}
+          65534
+          {% elif ((state_attr('climate.proxon_template_heizung_eg_flur', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_eg_flur') | int)) == -1 %}
+          65535
+          {% else %}
+          {{ ((state_attr('climate.proxon_template_heizung_eg_flur', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_eg_flur') | int)) }}
+          {% endif %}
+  set_hvac_mode:
+    - service: >
+        {% if is_state('climate.proxon_template_heizung_eg_flur', 'auto') %}
+        switch.turn_off
+        {% elif is_state('climate.proxon_template_heizung_eg_flur', 'heat') %}
+        switch.turn_on
+        {% else %}
+        switch.turn_on
+        {% endif %}
+      entity_id: switch.proxon_heizelement_flur
+
+- platform: climate_template
+  name: Proxon Template Heizung Hobbyraum
+  unique_id: proxon_template_heizung_hobbyraum
+  modes:
+    - "auto"  
+    - "heat"
+  max_temp: 23
+  min_temp: 17
+  current_temperature_template: "{{ states('sensor.proxon_ist_temperatur_hobbyraum') }}"
+  set_temperature: 
+    - service: modbus.write_register
+      data_template:
+        hub: proxon
+        unit: 41
+        address: 219
+        value: > 
+          {% if ((state_attr('climate.proxon_template_heizung_hobbyraum', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_hobbyraum') | int)) == -3 %}
+          65533
+          {% elif ((state_attr('climate.proxon_template_heizung_hobbyraum', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_hobbyraum') | int)) == -2 %}
+          65534
+          {% elif ((state_attr('climate.proxon_template_heizung_hobbyraum', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_hobbyraum') | int)) == -1 %}
+          65535
+          {% else %}
+          {{ ((state_attr('climate.proxon_template_heizung_hobbyraum', 'temperature') | int) - (states('sensor.proxon_mitteltemperatur_hobbyraum') | int)) }}
+          {% endif %}
+  set_hvac_mode:
+    - service: >
+        {% if is_state('climate.proxon_template_heizung_hobbyraum', 'auto') %}
+        switch.turn_off
+        {% elif is_state('climate.proxon_template_heizung_hobbyraum', 'heat') %}
+        switch.turn_on
+        {% else %}
+        switch.turn_off
+        {% endif %}
+      entity_id: switch.proxon_heizelement_hobbyraum
+  
