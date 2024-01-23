@@ -5,7 +5,7 @@
 \paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
-\f0\fs24 \cf0 - title: L\'fcftungsanlage\
+\f0\fs24 \cf0   - title: L\'fcftungsanlage\
     path: luftungsanlage\
     icon: mdi:hvac\
     badges: []\
@@ -71,6 +71,27 @@
                   entity: sensor.proxon_intensivluftung_restzeit\
                   name: 'Restzeit '\
                   icon: mdi:clock-time-five-outline\
+          - type: horizontal-stack\
+            cards:\
+              - show_name: true\
+                show_icon: true\
+                type: button\
+                tap_action:\
+                  action: toggle\
+                entity: switch.proxon_kuehlung\
+                icon: mdi:snowflake\
+                name: K\'fchlfreigabe\
+                icon_height: 30px\
+              - show_name: true\
+                show_icon: true\
+                type: button\
+                tap_action:\
+                  action: toggle\
+                entity: switch.proxon_heizelemente_global\
+                icon: mdi:heat-wave\
+                name: Heizfreigabe\
+                show_state: false\
+                icon_height: 30px\
           - show_name: true\
             show_icon: false\
             show_state: true\
@@ -98,31 +119,6 @@
                     .name \{text-decoration: underline\}\
             state_color: false\
             columns: 2\
-          - type: horizontal-stack\
-            cards:\
-              - type: gauge\
-                entity: sensor.proxon_luftfeuchte_wohnzimmer\
-                needle: true\
-                segments:\
-                  - from: 0\
-                    color: '#db4437'\
-                  - from: 35\
-                    color: '#ffa600'\
-                  - from: 40\
-                    color: '#43a047'\
-                  - from: 60\
-                    color: '#ffa600'\
-                  - from: 65\
-                    color: '#db4437'\
-              - type: gauge\
-                entity: sensor.proxon_co2_wohnzimmer\
-                needle: true\
-                severity:\
-                  green: 0\
-                  yellow: 800\
-                  red: 900\
-                unit: ppm\
-                max: 1200\
           - show_name: true\
             show_icon: false\
             show_state: true\
@@ -142,25 +138,29 @@
             cards:\
               - type: vertical-stack\
                 cards:\
-                  - show_name: true\
-                    show_icon: true\
-                    type: button\
-                    tap_action:\
-                      action: toggle\
-                    entity: switch.proxon_kuehlung\
-                    icon: mdi:snowflake\
-                    icon_height: 110px\
-                    name: K\'fchlfreigabe\
-                  - show_name: true\
-                    show_icon: true\
-                    type: button\
-                    tap_action:\
-                      action: toggle\
-                    entity: switch.proxon_heizelemente_global\
-                    icon: mdi:heat-wave\
-                    icon_height: 110px\
-                    name: Heizfreigabe\
-                    show_state: false\
+                  - type: gauge\
+                    entity: sensor.proxon_luftfeuchte_wohnzimmer\
+                    needle: true\
+                    segments:\
+                      - from: 0\
+                        color: '#db4437'\
+                      - from: 35\
+                        color: '#ffa600'\
+                      - from: 40\
+                        color: '#43a047'\
+                      - from: 60\
+                        color: '#ffa600'\
+                      - from: 65\
+                        color: '#db4437'\
+                  - type: gauge\
+                    entity: sensor.proxon_co2_wohnzimmer\
+                    needle: true\
+                    severity:\
+                      green: 0\
+                      yellow: 800\
+                      red: 900\
+                    unit: ppm\
+                    max: 1200\
               - type: thermostat\
                 entity: climate.proxon_template_heizung_wohnzimmer\
                 name: Wohnzimmer\
@@ -317,4 +317,4 @@
             name: Hobbyraum\
             icon: mdi:lock\
         title: Tastensperre\
-        show_header_toggle: false}
+        show_header_toggle: true}
