@@ -1,440 +1,433 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2759
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww26540\viewh18000\viewkind0
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-
-\f0\fs24 \cf0 - id: '1700511161073'\
-  alias: Slider L\'fcfterstufe aktualisieren\
-  trigger:\
-  - platform: state\
-    entity_id: sensor.proxon_lufterstufe\
-  action:\
-  - service: input_number.set_value\
-    target:\
-      entity_id: input_number.proxon_luefterstufe_slider\
-    data:\
-      value: '\{\{ states(''sensor.proxon_lufterstufe'') | int \}\}'\
-- id: '1700597043435'\
-  alias: Slider L\'fcfterstufe einstellen\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: input_number.proxon_luefterstufe_slider\
-  condition: []\
-  action:\
-  - service: modbus.write_register\
-    data:\
-      slave: 41\
-      address: 22\
-      value: '\{\{ states(''input_number.proxon_luefterstufe_slider'') | int \}\}'\
-      hub: proxon\
-  mode: single\
-- id: '1700597609990'\
-  alias: Slider Wassertemperatur einstellen\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: input_number.proxon_sollwert_wassertemperatur_slider\
-  condition: []\
-  action:\
-  - service: modbus.write_register\
-    data:\
-      slave: 41\
-      address: 2000\
-      value: '\{\{ (states(''input_number.proxon_sollwert_wassertemperatur_slider'')\
-        | int)*10 \}\}'\
-      hub: proxon\
-  mode: single\
-- id: '1700597748360'\
-  alias: Slider Wassertemperatur aktualisieren\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: sensor.proxon_soll_temperatur_wasser\
-  condition: []\
-  action:\
-  - service: input_number.set_value\
-    target:\
-      entity_id: input_number.proxon_sollwert_wassertemperatur_slider\
-    data:\
-      value: '\{\{ states(''sensor.proxon_soll_temperatur_wasser'') | int \}\}'\
-  mode: single\
-- id: '1701333541695'\
-  alias: Slider Heizstabtemperatur aktualisieren\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id:\
-    - sensor.proxon_heizstab_temperatur\
-  condition: []\
-  action:\
-  - service: input_number.set_value\
-    target:\
-      entity_id: input_number.proxon_sollwert_freigabe_heizstab_slider\
-    data:\
-      value: '\{\{ states(''sensor.proxon_heizstab_temperatur'') | int \}\}'\
-  mode: single\
-- id: '1701334173813'\
-  alias: Slider Heizstabtemperatur einstellen\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: input_number.proxon_sollwert_freigabe_heizstab_slider\
-  condition: []\
-  action:\
-  - service: modbus.write_register\
-    data:\
-      slave: 41\
-      address: 2003\
-      value: '\{\{ (states(''input_number.proxon_sollwert_freigabe_heizstab_slider'')\
-        | int)*10 \}\}'\
-      hub: proxon\
-  mode: single\
-- id: '1701723461633'\
-  alias: Select Betriebsart einstellen\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: input_select.proxon_betriebsart_select\
-  condition: []\
-  action:\
-  - service: modbus.write_register\
-    data:\
-      hub: proxon\
-      unit: 41\
-      address: 16\
-      value: '\{\{ state_attr(trigger.entity_id,''options'').index(states(trigger.entity_id))\
-        \}\}'\
-  - service: homeassistant.update_entity\
-    data:\
-      entity_id: sensor.proxon_betriebsart\
-  initial_state: 'on'\
-- id: '1701723719963'\
-  alias: Select Betriebsart aktualisieren\
-  trigger:\
-  - platform: state\
-    entity_id: sensor.proxon_betriebsart\
-  condition: []\
-  action:\
-    service: input_select.select_option\
-    target:\
-      entity_id: input_select.proxon_betriebsart_select\
-    data:\
-      option: '\{\{ state_attr(''input_select.proxon_betriebsart_select'',''options'')\
-        [states(trigger.entity_id) | int] \}\}'\
-  initial_state: 'on'\
-- id: '1702027465687'\
-  alias: Thermostat aktualisieren - Schlafzimmer\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: sensor.offsettemperatur_schlafzimmer\
-  condition: []\
-  action:\
-  - service: climate.set_temperature\
-    data:\
-      temperature: '\{\{ (states(''sensor.offsettemperatur_schlafzimmer'') | int) +\
-        (states(''sensor.proxon_mitteltemperatur_schlafzimmer'') | int)\}\}'\
-    target:\
-      entity_id: climate.proxon_template_heizung_schlafzimmer\
-  mode: single\
-- id: '1702033097566'\
-  alias: Thermostat aktualisieren - Eline\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: sensor.proxon_offsettemperatur_eline\
-  condition: []\
-  action:\
-  - service: climate.set_temperature\
-    data:\
-      temperature: '\{\{ (states(''sensor.proxon_offsettemperatur_eline'') | int) +\
-        (states(''sensor.proxon_mitteltemperatur_eline'') | int)\}\}'\
-    target:\
-      entity_id: climate.proxon_template_heizung_eline\
-  mode: single\
-- id: '1702033128840'\
-  alias: Thermostat aktualisieren - Lean\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: sensor.proxon_offsettemperatur_lean\
-  condition: []\
-  action:\
-  - service: climate.set_temperature\
-    data:\
-      temperature: '\{\{ (states(''sensor.proxon_offsettemperatur_lean'') | int) + (states(''sensor.proxon_mitteltemperatur_lean'')\
-        | int)\}\}'\
-    target:\
-      entity_id: climate.proxon_template_heizung_lean\
-  mode: single\
-- id: '1702033162859'\
-  alias: Thermostat aktualisieren - Buero\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: sensor.proxon_offsettemperatur_buero\
-  condition: []\
-  action:\
-  - service: climate.set_temperature\
-    data:\
-      temperature: '\{\{ (states(''sensor.proxon_offsettemperatur_buero'') | int) +\
-        (states(''sensor.proxon_mitteltemperatur_buero'') | int)\}\}'\
-    target:\
-      entity_id: climate.proxon_template_heizung_buero\
-  mode: single\
-- id: '1702033190365'\
-  alias: Thermostat aktualisieren - EG Flur\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: sensor.proxon_offsettemperatur_eg_flur\
-  condition: []\
-  action:\
-  - service: climate.set_temperature\
-    data:\
-      temperature: '\{\{ (states(''sensor.proxon_offsettemperatur_eg_flur'') | int)\
-        + (states(''sensor.proxon_mitteltemperatur_eg_flur'') | int)\}\}'\
-    target:\
-      entity_id: climate.proxon_template_heizung_eg_flur\
-  mode: single\
-- id: '1702033321226'\
-  alias: Thermostat aktualisieren - Wohnzimmer\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: sensor.proxon_offsettemperatur_wohnzimmer\
-  condition: []\
-  action:\
-  - service: climate.set_temperature\
-    data:\
-      temperature: '\{\{ (states(''sensor.proxon_offsettemperatur_wohnzimmer'') | int)\
-        \}\}'\
-    target:\
-      entity_id: climate.proxon_template_heizung_wohnzimmer\
-  mode: single\
-- id: '1702045765816'\
-  alias: Thermostat aktualisieren - Hobbyraum\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: sensor.proxon_offsettemperatur_hobbyraum\
-  condition: []\
-  action:\
-  - service: climate.set_temperature\
-    data:\
-      temperature: '\{\{ (states(''sensor.proxon_offsettemperatur_hobbyraum'') | int)\
-        + (states(''sensor.proxon_mitteltemperatur_hobbyraum'') | int)\}\}'\
-    target:\
-      entity_id: climate.proxon_template_heizung_hobbyraum\
-  mode: single\
-- id: '1702150512515'\
-  alias: Thermostat (Heizelement) aktualisieren - Schlafzimmer\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: switch.heizelement_schlafzimmer\
-  condition: []\
-  action:\
-  - if:\
-    - alias: Wenn an\
-      condition: state\
-      entity_id: switch.heizelement_schlafzimmer\
-      state: 'on'\
-    then:\
-    - alias: Heat einschalten\
-      service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_schlafzimmer\
-      data:\
-        hvac_mode: heat\
-    else:\
-    - service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_schlafzimmer\
-      data:\
-        hvac_mode: auto\
-- id: '1702150751404'\
-  alias: Thermostat (Heizelement) aktualisieren - Buero\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: switch.proxon_heizelement_buero\
-  condition: []\
-  action:\
-  - if:\
-    - alias: Wenn an\
-      condition: state\
-      entity_id: switch.proxon_heizelement_buero\
-      state: 'on'\
-    then:\
-    - alias: Heat einschalten\
-      service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_buero\
-      data:\
-        hvac_mode: heat\
-    else:\
-    - service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_buero\
-      data:\
-        hvac_mode: auto\
-- id: '1702150791356'\
-  alias: Thermostat (Heizelement) aktualisieren - Lean\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: switch.proxon_heizelement_lean\
-  condition: []\
-  action:\
-  - if:\
-    - alias: Wenn an\
-      condition: state\
-      entity_id: switch.proxon_heizelement_lean\
-      state: 'on'\
-    then:\
-    - alias: Heat einschalten\
-      service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_lean\
-      data:\
-        hvac_mode: heat\
-    else:\
-    - service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_lean\
-      data:\
-        hvac_mode: auto\
-- id: '1702150871708'\
-  alias: Thermostat (Heizelement) aktualisieren - Eline\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: switch.proxon_heizelement_eline\
-  condition: []\
-  action:\
-  - if:\
-    - alias: Wenn an\
-      condition: state\
-      entity_id: switch.proxon_heizelement_eline\
-      state: 'on'\
-    then:\
-    - alias: Heat einschalten\
-      service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_eline\
-      data:\
-        hvac_mode: heat\
-    else:\
-    - service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_eline\
-      data:\
-        hvac_mode: auto\
-- id: '1702150912208'\
-  alias: Thermostat (Heizelement) aktualisieren - Flur\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: switch.proxon_heizelement_flur\
-  condition: []\
-  action:\
-  - if:\
-    - alias: Wenn an\
-      condition: state\
-      entity_id: switch.proxon_heizelement_flur\
-      state: 'on'\
-    then:\
-    - alias: Heat einschalten\
-      service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_eg_flur\
-      data:\
-        hvac_mode: heat\
-    else:\
-    - service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_eg_flur\
-      data:\
-        hvac_mode: auto\
-- id: '1702150950223'\
-  alias: Thermostat (Heizelement) aktualisieren - Wohnzimmer\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: switch.proxon_heizelement_wohnzimmer\
-  condition: []\
-  action:\
-  - if:\
-    - alias: Wenn an\
-      condition: state\
-      entity_id: switch.proxon_heizelement_wohnzimmer\
-      state: 'on'\
-    then:\
-    - alias: Heat einschalten\
-      service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_wohnzimmer\
-      data:\
-        hvac_mode: heat\
-    else:\
-    - service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_wohnzimmer\
-      data:\
-        hvac_mode: auto\
-- id: '1702151015408'\
-  alias: Thermostat (Heizelement) aktualisieren - Hobbyraum\
-  description: ''\
-  trigger:\
-  - platform: state\
-    entity_id: switch.proxon_heizelement_hobbyraum\
-  condition: []\
-  action:\
-  - if:\
-    - alias: Wenn an\
-      condition: state\
-      entity_id: switch.proxon_heizelement_hobbyraum\
-      state: 'on'\
-    then:\
-    - alias: Heat einschalten\
-      service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_hobbyraum\
-      data:\
-        hvac_mode: heat\
-    else:\
-    - service: climate.set_hvac_mode\
-      target:\
-        entity_id: climate.proxon_template_heizung_hobbyraum\
-      data:\
-        hvac_mode: auto\
-- id: '1704138818575'\
-  alias: Intensivl\'fcftung (60min)\
-  description: Starte Intensivl\'fcftung (60min)\
-  trigger:\
-  condition: []\
-  action:\
-  - service: modbus.write_register\
-    data:\
-      slave: 41\
-      address: 133\
-      value: 60\
-      hub: proxon\
-  mode: single\
-- id: '1704355277754'\
-  alias: Intensivl\'fcftung ausschalten\
-  description: Intensivl\'fcftung ausschalten\
-  trigger:\
-  condition: []\
-  action:\
-  - service: modbus.write_register\
-    data:\
-      slave: 41\
-      address: 133\
-      value: 0\
-      hub: proxon\
-  mode: single}
+- id: '1700511161073'
+  alias: Slider Lüfterstufe aktualisieren
+  trigger:
+  - platform: state
+    entity_id: sensor.proxon_lufterstufe
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.proxon_luefterstufe_slider
+    data:
+      value: '{{ states(''sensor.proxon_lufterstufe'') | int }}'
+- id: '1700597043435'
+  alias: Slider Lüfterstufe einstellen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.proxon_luefterstufe_slider
+  condition: []
+  action:
+  - service: modbus.write_register
+    data:
+      slave: 41
+      address: 22
+      value: '{{ states(''input_number.proxon_luefterstufe_slider'') | int }}'
+      hub: proxon
+  mode: single
+- id: '1700597609990'
+  alias: Slider Wassertemperatur einstellen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.proxon_sollwert_wassertemperatur_slider
+  condition: []
+  action:
+  - service: modbus.write_register
+    data:
+      slave: 41
+      address: 2000
+      value: '{{ (states(''input_number.proxon_sollwert_wassertemperatur_slider'')
+        | int)*10 }}'
+      hub: proxon
+  mode: single
+- id: '1700597748360'
+  alias: Slider Wassertemperatur aktualisieren
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.proxon_soll_temperatur_wasser
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.proxon_sollwert_wassertemperatur_slider
+    data:
+      value: '{{ states(''sensor.proxon_soll_temperatur_wasser'') | int }}'
+  mode: single
+- id: '1701333541695'
+  alias: Slider Heizstabtemperatur aktualisieren
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.proxon_heizstab_temperatur
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.proxon_sollwert_freigabe_heizstab_slider
+    data:
+      value: '{{ states(''sensor.proxon_heizstab_temperatur'') | int }}'
+  mode: single
+- id: '1701334173813'
+  alias: Slider Heizstabtemperatur einstellen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.proxon_sollwert_freigabe_heizstab_slider
+  condition: []
+  action:
+  - service: modbus.write_register
+    data:
+      slave: 41
+      address: 2003
+      value: '{{ (states(''input_number.proxon_sollwert_freigabe_heizstab_slider'')
+        | int)*10 }}'
+      hub: proxon
+  mode: single
+- id: '1701723461633'
+  alias: Select Betriebsart einstellen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_select.proxon_betriebsart_select
+  condition: []
+  action:
+  - service: modbus.write_register
+    data:
+      hub: proxon
+      unit: 41
+      address: 16
+      value: '{{ state_attr(trigger.entity_id,''options'').index(states(trigger.entity_id))
+        }}'
+  - service: homeassistant.update_entity
+    data:
+      entity_id: sensor.proxon_betriebsart
+  initial_state: 'on'
+- id: '1701723719963'
+  alias: Select Betriebsart aktualisieren
+  trigger:
+  - platform: state
+    entity_id: sensor.proxon_betriebsart
+  condition: []
+  action:
+    service: input_select.select_option
+    target:
+      entity_id: input_select.proxon_betriebsart_select
+    data:
+      option: '{{ state_attr(''input_select.proxon_betriebsart_select'',''options'')
+        [states(trigger.entity_id) | int] }}'
+  initial_state: 'on'
+- id: '1702027465687'
+  alias: Thermostat aktualisieren - Schlafzimmer
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.offsettemperatur_schlafzimmer
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ (states(''sensor.offsettemperatur_schlafzimmer'') | int) +
+        (states(''sensor.proxon_mitteltemperatur_schlafzimmer'') | int)}}'
+    target:
+      entity_id: climate.proxon_template_heizung_schlafzimmer
+  mode: single
+- id: '1702033097566'
+  alias: Thermostat aktualisieren - Eline
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.proxon_offsettemperatur_eline
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ (states(''sensor.proxon_offsettemperatur_eline'') | int) +
+        (states(''sensor.proxon_mitteltemperatur_eline'') | int)}}'
+    target:
+      entity_id: climate.proxon_template_heizung_eline
+  mode: single
+- id: '1702033128840'
+  alias: Thermostat aktualisieren - Lean
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.proxon_offsettemperatur_lean
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ (states(''sensor.proxon_offsettemperatur_lean'') | int) + (states(''sensor.proxon_mitteltemperatur_lean'')
+        | int)}}'
+    target:
+      entity_id: climate.proxon_template_heizung_lean
+  mode: single
+- id: '1702033162859'
+  alias: Thermostat aktualisieren - Buero
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.proxon_offsettemperatur_buero
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ (states(''sensor.proxon_offsettemperatur_buero'') | int) +
+        (states(''sensor.proxon_mitteltemperatur_buero'') | int)}}'
+    target:
+      entity_id: climate.proxon_template_heizung_buero
+  mode: single
+- id: '1702033190365'
+  alias: Thermostat aktualisieren - EG Flur
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.proxon_offsettemperatur_eg_flur
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ (states(''sensor.proxon_offsettemperatur_eg_flur'') | int)
+        + (states(''sensor.proxon_mitteltemperatur_eg_flur'') | int)}}'
+    target:
+      entity_id: climate.proxon_template_heizung_eg_flur
+  mode: single
+- id: '1702033321226'
+  alias: Thermostat aktualisieren - Wohnzimmer
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.proxon_offsettemperatur_wohnzimmer
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ (states(''sensor.proxon_offsettemperatur_wohnzimmer'') | int)
+        }}'
+    target:
+      entity_id: climate.proxon_template_heizung_wohnzimmer
+  mode: single
+- id: '1702045765816'
+  alias: Thermostat aktualisieren - Hobbyraum
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.proxon_offsettemperatur_hobbyraum
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ (states(''sensor.proxon_offsettemperatur_hobbyraum'') | int)
+        + (states(''sensor.proxon_mitteltemperatur_hobbyraum'') | int)}}'
+    target:
+      entity_id: climate.proxon_template_heizung_hobbyraum
+  mode: single
+- id: '1702150512515'
+  alias: Thermostat (Heizelement) aktualisieren - Schlafzimmer
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.heizelement_schlafzimmer
+  condition: []
+  action:
+  - if:
+    - alias: Wenn an
+      condition: state
+      entity_id: switch.heizelement_schlafzimmer
+      state: 'on'
+    then:
+    - alias: Heat einschalten
+      service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_schlafzimmer
+      data:
+        hvac_mode: heat
+    else:
+    - service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_schlafzimmer
+      data:
+        hvac_mode: auto
+- id: '1702150751404'
+  alias: Thermostat (Heizelement) aktualisieren - Buero
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.proxon_heizelement_buero
+  condition: []
+  action:
+  - if:
+    - alias: Wenn an
+      condition: state
+      entity_id: switch.proxon_heizelement_buero
+      state: 'on'
+    then:
+    - alias: Heat einschalten
+      service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_buero
+      data:
+        hvac_mode: heat
+    else:
+    - service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_buero
+      data:
+        hvac_mode: auto
+- id: '1702150791356'
+  alias: Thermostat (Heizelement) aktualisieren - Lean
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.proxon_heizelement_lean
+  condition: []
+  action:
+  - if:
+    - alias: Wenn an
+      condition: state
+      entity_id: switch.proxon_heizelement_lean
+      state: 'on'
+    then:
+    - alias: Heat einschalten
+      service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_lean
+      data:
+        hvac_mode: heat
+    else:
+    - service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_lean
+      data:
+        hvac_mode: auto
+- id: '1702150871708'
+  alias: Thermostat (Heizelement) aktualisieren - Eline
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.proxon_heizelement_eline
+  condition: []
+  action:
+  - if:
+    - alias: Wenn an
+      condition: state
+      entity_id: switch.proxon_heizelement_eline
+      state: 'on'
+    then:
+    - alias: Heat einschalten
+      service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_eline
+      data:
+        hvac_mode: heat
+    else:
+    - service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_eline
+      data:
+        hvac_mode: auto
+- id: '1702150912208'
+  alias: Thermostat (Heizelement) aktualisieren - Flur
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.proxon_heizelement_flur
+  condition: []
+  action:
+  - if:
+    - alias: Wenn an
+      condition: state
+      entity_id: switch.proxon_heizelement_flur
+      state: 'on'
+    then:
+    - alias: Heat einschalten
+      service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_eg_flur
+      data:
+        hvac_mode: heat
+    else:
+    - service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_eg_flur
+      data:
+        hvac_mode: auto
+- id: '1702150950223'
+  alias: Thermostat (Heizelement) aktualisieren - Wohnzimmer
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.proxon_heizelement_wohnzimmer
+  condition: []
+  action:
+  - if:
+    - alias: Wenn an
+      condition: state
+      entity_id: switch.proxon_heizelement_wohnzimmer
+      state: 'on'
+    then:
+    - alias: Heat einschalten
+      service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_wohnzimmer
+      data:
+        hvac_mode: heat
+    else:
+    - service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_wohnzimmer
+      data:
+        hvac_mode: auto
+- id: '1702151015408'
+  alias: Thermostat (Heizelement) aktualisieren - Hobbyraum
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.proxon_heizelement_hobbyraum
+  condition: []
+  action:
+  - if:
+    - alias: Wenn an
+      condition: state
+      entity_id: switch.proxon_heizelement_hobbyraum
+      state: 'on'
+    then:
+    - alias: Heat einschalten
+      service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_hobbyraum
+      data:
+        hvac_mode: heat
+    else:
+    - service: climate.set_hvac_mode
+      target:
+        entity_id: climate.proxon_template_heizung_hobbyraum
+      data:
+        hvac_mode: auto
+- id: '1704138818575'
+  alias: Intensivlüftung (60min)
+  description: Starte Intensivlüftung (60min)
+  trigger:
+  condition: []
+  action:
+  - service: modbus.write_register
+    data:
+      slave: 41
+      address: 133
+      value: 60
+      hub: proxon
+  mode: single
+- id: '1704355277754'
+  alias: Intensivlüftung ausschalten
+  description: Intensivlüftung ausschalten
+  trigger:
+  condition: []
+  action:
+  - service: modbus.write_register
+    data:
+      slave: 41
+      address: 133
+      value: 0
+      hub: proxon
+  mode: single
