@@ -1,320 +1,313 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2759
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-
-\f0\fs24 \cf0   - title: L\'fcftungsanlage\
-    path: luftungsanlage\
-    icon: mdi:hvac\
-    badges: []\
-    cards:\
-      - type: vertical-stack\
-        cards:\
-          - type: entities\
-            entities:\
-              - entity: input_select.proxon_betriebsart_select\
-                name: Betriebsart\
-              - entity: sensor.proxon_aktueller_betrieb_template\
-                name: Aktueller Betrieb\
-                icon: mdi:heat-pump\
-              - entity: input_number.proxon_luefterstufe_slider\
-                icon: mdi:fan\
-                name: L\'fcfterstufe\
-              - entity: sensor.proxon_luftungsstufe_ventilator_zuluft\
-                name: Aktuelle L\'fcfterstufe\
-                icon: mdi:fan\
-            state_color: true\
-            show_header_toggle: false\
-          - type: conditional\
-            conditions:\
-              - condition: state\
-                entity: sensor.proxon_intensivluftung_restzeit\
-                state: '0'\
-            card:\
-              show_name: true\
-              show_icon: true\
-              type: button\
-              tap_action:\
-                action: call-service\
-                service: automation.trigger\
-                target:\
-                  entity_id: automation.intensivluftung_60min\
-                data:\
-                  skip_condition: true\
-              name: Starte Intensivl\'fcftung\
-              icon: mdi:fan-chevron-up\
-              icon_height: 30px\
-          - type: conditional\
-            conditions:\
-              - condition: state\
-                entity: sensor.proxon_intensivluftung_restzeit\
-                state_not: '0'\
-            card:\
-              type: horizontal-stack\
-              cards:\
-                - show_name: true\
-                  show_icon: true\
-                  type: button\
-                  tap_action:\
-                    action: call-service\
-                    service: automation.trigger\
-                    target:\
-                      entity_id: automation.intensivluftung_ausschalten\
-                    data:\
-                      skip_condition: true\
-                  name: Stoppe Intensivl\'fcftung\
-                  icon: mdi:stop-circle-outline\
-                  icon_height: 30px\
-                - type: tile\
-                  entity: sensor.proxon_intensivluftung_restzeit\
-                  name: 'Restzeit '\
-                  icon: mdi:clock-time-five-outline\
-          - type: horizontal-stack\
-            cards:\
-              - show_name: true\
-                show_icon: true\
-                type: button\
-                tap_action:\
-                  action: toggle\
-                entity: switch.proxon_kuehlung\
-                icon: mdi:snowflake\
-                name: K\'fchlfreigabe\
-                icon_height: 30px\
-              - show_name: true\
-                show_icon: true\
-                type: button\
-                tap_action:\
-                  action: toggle\
-                entity: switch.proxon_heizelemente_global\
-                icon: mdi:heat-wave\
-                name: Heizfreigabe\
-                show_state: false\
-                icon_height: 30px\
-          - show_name: true\
-            show_icon: false\
-            show_state: true\
-            type: glance\
-            entities:\
-              - entity: sensor.proxon_temperatur_zuluft\
-                card_mod:\
-                  style: |\
-                    :host \{\}\
-                    .name \{text-decoration: underline\}\
-              - entity: sensor.proxon_temperatur_frischluft\
-                card_mod:\
-                  style: |\
-                    :host \{\}\
-                    .name \{text-decoration: underline\}\
-              - entity: sensor.proxon_temperatur_abluft\
-                card_mod:\
-                  style: |\
-                    :host \{\}\
-                    .name \{text-decoration: underline\}\
-              - entity: sensor.proxon_temperatur_fortluft\
-                card_mod:\
-                  style: |\
-                    :host \{\}\
-                    .name \{text-decoration: underline\}\
-            state_color: false\
-            columns: 2\
-          - show_name: true\
-            show_icon: false\
-            show_state: true\
-            type: glance\
-            entities:\
-              - entity: sensor.proxon_filter_resttage\
-                name: Filter Resttage\
-                card_mod:\
-                  style: |\
-                    :host \{\}\
-                    .name \{text-decoration: underline\}\
-            columns: 1\
-            state_color: false\
-      - type: vertical-stack\
-        cards:\
-          - type: horizontal-stack\
-            cards:\
-              - type: vertical-stack\
-                cards:\
-                  - type: gauge\
-                    entity: sensor.proxon_luftfeuchte_wohnzimmer\
-                    needle: true\
-                    segments:\
-                      - from: 0\
-                        color: '#db4437'\
-                      - from: 35\
-                        color: '#ffa600'\
-                      - from: 40\
-                        color: '#43a047'\
-                      - from: 60\
-                        color: '#ffa600'\
-                      - from: 65\
-                        color: '#db4437'\
-                  - type: gauge\
-                    entity: sensor.proxon_co2_wohnzimmer\
-                    needle: true\
-                    severity:\
-                      green: 0\
-                      yellow: 800\
-                      red: 900\
-                    unit: ppm\
-                    max: 1200\
-              - type: thermostat\
-                entity: climate.proxon_template_heizung_wohnzimmer\
-                name: Wohnzimmer\
-                features:\
-                  - type: climate-hvac-modes\
-                    hvac_modes:\
-                      - auto\
-                      - heat\
-                show_current_as_primary: true\
-          - type: horizontal-stack\
-            cards:\
-              - type: thermostat\
-                entity: climate.proxon_template_heizung_schlafzimmer\
-                name: Schlafzimmer\
-                features:\
-                  - type: climate-hvac-modes\
-                    hvac_modes:\
-                      - auto\
-                      - heat\
-                show_current_as_primary: true\
-              - type: thermostat\
-                entity: climate.proxon_template_heizung_buero\
-                name: B\'fcro\
-                features:\
-                  - type: climate-hvac-modes\
-                    hvac_modes:\
-                      - auto\
-                      - heat\
-                show_current_as_primary: true\
-          - type: horizontal-stack\
-            cards:\
-              - type: thermostat\
-                entity: climate.proxon_template_heizung_lean\
-                name: Lean\
-                features:\
-                  - type: climate-hvac-modes\
-                    hvac_modes:\
-                      - auto\
-                      - heat\
-                show_current_as_primary: true\
-              - type: thermostat\
-                entity: climate.proxon_template_heizung_eline\
-                name: Eline\
-                features:\
-                  - type: climate-hvac-modes\
-                    hvac_modes:\
-                      - auto\
-                      - heat\
-                show_current_as_primary: true\
-          - type: horizontal-stack\
-            cards:\
-              - type: thermostat\
-                entity: climate.proxon_template_heizung_hobbyraum\
-                name: Hobbyraum\
-                features:\
-                  - type: climate-hvac-modes\
-                    hvac_modes:\
-                      - auto\
-                      - heat\
-                show_current_as_primary: true\
-              - type: thermostat\
-                entity: climate.proxon_template_heizung_eg_flur\
-                name: Flur\
-                features:\
-                  - type: climate-hvac-modes\
-                    hvac_modes:\
-                      - auto\
-                      - heat\
-                show_current_as_primary: true\
-      - type: vertical-stack\
-        cards:\
-          - graph: line\
-            type: sensor\
-            detail: 2\
-            entity: sensor.proxon_ist_temperatur_wasser\
-            name: Temperatur Mitte\
-            icon: mdi:thermometer-water\
-            hours_to_show: 24\
-          - show_name: true\
-            show_icon: false\
-            show_state: true\
-            type: glance\
-            entities:\
-              - entity: sensor.proxon_temperatur_wasser_unten\
-                name: Temperatur Unten\
-                card_mod:\
-                  style: |\
-                    :host \{\}\
-                    .name \{text-decoration: underline\}\
-              - entity: binary_sensor.proxon_kompressor_status\
-                name: Kompressor\
-                card_mod:\
-                  style: |\
-                    :host \{\}\
-                    .name \{text-decoration: underline\}\
-            columns: 2\
-          - type: tile\
-            entity: input_number.proxon_sollwert_wassertemperatur_slider\
-            name: Wassertemperatur (Soll)\
-            icon: mdi:thermometer-water\
-            features:\
-              - type: numeric-input\
-                style: slider\
-          - features:\
-              - type: numeric-input\
-                style: slider\
-            type: tile\
-            entity: input_number.proxon_sollwert_freigabe_heizstab_slider\
-            name: Freigabe Heizstabtemperatur\
-            icon: mdi:thermometer-water\
-            vertical: false\
-          - type: horizontal-stack\
-            cards:\
-              - show_name: true\
-                show_icon: true\
-                type: button\
-                tap_action:\
-                  action: toggle\
-                entity: switch.proxon_heizstab\
-                icon: mdi:heating-coil\
-                icon_height: 30px\
-                name: Freigabe Heizstab\
-                show_state: false\
-              - show_name: true\
-                show_icon: true\
-                type: button\
-                tap_action:\
-                  action: none\
-                entity: binary_sensor.proxon_heizstab_status\
-                icon: mdi:heat-wave\
-                icon_height: 30px\
-                name: Status Heizstab\
-                show_state: false\
-                hold_action:\
-                  action: none\
-      - type: entities\
-        entities:\
-          - entity: switch.proxon_tastensperre_buero\
-            name: B\'fcro\
-            icon: mdi:lock\
-          - entity: switch.proxon_tastensperre_flur\
-            name: Flur\
-            icon: mdi:lock\
-          - entity: switch.proxon_tastensperre_schlafzimmer\
-            name: Schlafzimmer\
-            icon: mdi:lock\
-          - entity: switch.proxon_tastensperre_eline\
-            name: Eline\
-            icon: mdi:lock\
-          - entity: switch.proxon_tastensperre_lean\
-            name: Lean\
-            icon: mdi:lock\
-          - entity: switch.proxon_tastensperre_hobbyraum\
-            name: Hobbyraum\
-            icon: mdi:lock\
-        title: Tastensperre\
-        show_header_toggle: true}
+  - title: Lüftungsanlage
+    path: luftungsanlage
+    icon: mdi:hvac
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: input_select.proxon_betriebsart_select
+                name: Betriebsart
+              - entity: sensor.proxon_aktueller_betrieb_template
+                name: Aktueller Betrieb
+                icon: mdi:heat-pump
+              - entity: input_number.proxon_luefterstufe_slider
+                icon: mdi:fan
+                name: Lüfterstufe
+              - entity: sensor.proxon_luftungsstufe_ventilator_zuluft
+                name: Aktuelle Lüfterstufe
+                icon: mdi:fan
+            state_color: true
+            show_header_toggle: false
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: sensor.proxon_intensivluftung_restzeit
+                state: '0'
+            card:
+              show_name: true
+              show_icon: true
+              type: button
+              tap_action:
+                action: call-service
+                service: automation.trigger
+                target:
+                  entity_id: automation.intensivluftung_60min
+                data:
+                  skip_condition: true
+              name: Starte Intensivlüftung
+              icon: mdi:fan-chevron-up
+              icon_height: 30px
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: sensor.proxon_intensivluftung_restzeit
+                state_not: '0'
+            card:
+              type: horizontal-stack
+              cards:
+                - show_name: true
+                  show_icon: true
+                  type: button
+                  tap_action:
+                    action: call-service
+                    service: automation.trigger
+                    target:
+                      entity_id: automation.intensivluftung_ausschalten
+                    data:
+                      skip_condition: true
+                  name: Stoppe Intensivlüftung
+                  icon: mdi:stop-circle-outline
+                  icon_height: 30px
+                - type: tile
+                  entity: sensor.proxon_intensivluftung_restzeit
+                  name: 'Restzeit '
+                  icon: mdi:clock-time-five-outline
+          - type: horizontal-stack
+            cards:
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: switch.proxon_kuehlung
+                icon: mdi:snowflake
+                name: Kühlfreigabe
+                icon_height: 30px
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: switch.proxon_heizelemente_global
+                icon: mdi:heat-wave
+                name: Heizfreigabe
+                show_state: false
+                icon_height: 30px
+          - show_name: true
+            show_icon: false
+            show_state: true
+            type: glance
+            entities:
+              - entity: sensor.proxon_temperatur_zuluft
+                card_mod:
+                  style: |
+                    :host {}
+                    .name {text-decoration: underline}
+              - entity: sensor.proxon_temperatur_frischluft
+                card_mod:
+                  style: |
+                    :host {}
+                    .name {text-decoration: underline}
+              - entity: sensor.proxon_temperatur_abluft
+                card_mod:
+                  style: |
+                    :host {}
+                    .name {text-decoration: underline}
+              - entity: sensor.proxon_temperatur_fortluft
+                card_mod:
+                  style: |
+                    :host {}
+                    .name {text-decoration: underline}
+            state_color: false
+            columns: 2
+          - show_name: true
+            show_icon: false
+            show_state: true
+            type: glance
+            entities:
+              - entity: sensor.proxon_filter_resttage
+                name: Filter Resttage
+                card_mod:
+                  style: |
+                    :host {}
+                    .name {text-decoration: underline}
+            columns: 1
+            state_color: false
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: gauge
+                    entity: sensor.proxon_luftfeuchte_wohnzimmer
+                    needle: true
+                    segments:
+                      - from: 0
+                        color: '#db4437'
+                      - from: 35
+                        color: '#ffa600'
+                      - from: 40
+                        color: '#43a047'
+                      - from: 60
+                        color: '#ffa600'
+                      - from: 65
+                        color: '#db4437'
+                  - type: gauge
+                    entity: sensor.proxon_co2_wohnzimmer
+                    needle: true
+                    severity:
+                      green: 0
+                      yellow: 800
+                      red: 900
+                    unit: ppm
+                    max: 1200
+              - type: thermostat
+                entity: climate.proxon_template_heizung_wohnzimmer
+                name: Wohnzimmer
+                features:
+                  - type: climate-hvac-modes
+                    hvac_modes:
+                      - auto
+                      - heat
+                show_current_as_primary: true
+          - type: horizontal-stack
+            cards:
+              - type: thermostat
+                entity: climate.proxon_template_heizung_schlafzimmer
+                name: Schlafzimmer
+                features:
+                  - type: climate-hvac-modes
+                    hvac_modes:
+                      - auto
+                      - heat
+                show_current_as_primary: true
+              - type: thermostat
+                entity: climate.proxon_template_heizung_buero
+                name: Büro
+                features:
+                  - type: climate-hvac-modes
+                    hvac_modes:
+                      - auto
+                      - heat
+                show_current_as_primary: true
+          - type: horizontal-stack
+            cards:
+              - type: thermostat
+                entity: climate.proxon_template_heizung_lean
+                name: Lean
+                features:
+                  - type: climate-hvac-modes
+                    hvac_modes:
+                      - auto
+                      - heat
+                show_current_as_primary: true
+              - type: thermostat
+                entity: climate.proxon_template_heizung_eline
+                name: Eline
+                features:
+                  - type: climate-hvac-modes
+                    hvac_modes:
+                      - auto
+                      - heat
+                show_current_as_primary: true
+          - type: horizontal-stack
+            cards:
+              - type: thermostat
+                entity: climate.proxon_template_heizung_hobbyraum
+                name: Hobbyraum
+                features:
+                  - type: climate-hvac-modes
+                    hvac_modes:
+                      - auto
+                      - heat
+                show_current_as_primary: true
+              - type: thermostat
+                entity: climate.proxon_template_heizung_eg_flur
+                name: Flur
+                features:
+                  - type: climate-hvac-modes
+                    hvac_modes:
+                      - auto
+                      - heat
+                show_current_as_primary: true
+      - type: vertical-stack
+        cards:
+          - graph: line
+            type: sensor
+            detail: 2
+            entity: sensor.proxon_ist_temperatur_wasser
+            name: Temperatur Mitte
+            icon: mdi:thermometer-water
+            hours_to_show: 24
+          - show_name: true
+            show_icon: false
+            show_state: true
+            type: glance
+            entities:
+              - entity: sensor.proxon_temperatur_wasser_unten
+                name: Temperatur Unten
+                card_mod:
+                  style: |
+                    :host {}
+                    .name {text-decoration: underline}
+              - entity: binary_sensor.proxon_kompressor_status
+                name: Kompressor
+                card_mod:
+                  style: |
+                    :host {}
+                    .name {text-decoration: underline}
+            columns: 2
+          - type: tile
+            entity: input_number.proxon_sollwert_wassertemperatur_slider
+            name: Wassertemperatur (Soll)
+            icon: mdi:thermometer-water
+            features:
+              - type: numeric-input
+                style: slider
+          - features:
+              - type: numeric-input
+                style: slider
+            type: tile
+            entity: input_number.proxon_sollwert_freigabe_heizstab_slider
+            name: Freigabe Heizstabtemperatur
+            icon: mdi:thermometer-water
+            vertical: false
+          - type: horizontal-stack
+            cards:
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: switch.proxon_heizstab
+                icon: mdi:heating-coil
+                icon_height: 30px
+                name: Freigabe Heizstab
+                show_state: false
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: none
+                entity: binary_sensor.proxon_heizstab_status
+                icon: mdi:heat-wave
+                icon_height: 30px
+                name: Status Heizstab
+                show_state: false
+                hold_action:
+                  action: none
+      - type: entities
+        entities:
+          - entity: switch.proxon_tastensperre_buero
+            name: Büro
+            icon: mdi:lock
+          - entity: switch.proxon_tastensperre_flur
+            name: Flur
+            icon: mdi:lock
+          - entity: switch.proxon_tastensperre_schlafzimmer
+            name: Schlafzimmer
+            icon: mdi:lock
+          - entity: switch.proxon_tastensperre_eline
+            name: Eline
+            icon: mdi:lock
+          - entity: switch.proxon_tastensperre_lean
+            name: Lean
+            icon: mdi:lock
+          - entity: switch.proxon_tastensperre_hobbyraum
+            name: Hobbyraum
+            icon: mdi:lock
+        title: Tastensperre
+        show_header_toggle: true
