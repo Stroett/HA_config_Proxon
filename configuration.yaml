@@ -1,74 +1,67 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2759
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+modbus: !include own_files/modbus.yaml
+climate: !include own_files/climates.yaml
 
-\f0\fs24 \cf0 modbus: !include own_files/modbus.yaml\
-climate: !include own_files/climates.yaml\
-\
-#input number\
-input_number:\
-  proxon_luefterstufe_slider:\
-    name: Proxon L\'fcfterstufe - Slider\
-    min: 1\
-    max: 4\
-    step: 1\
-    \
-  proxon_sollwert_wassertemperatur_slider:\
-    name: Proxon Sollwert Wassertemperatur - Slider\
-    min: 40\
-    max: 55\
-    step: 1\
-\
-  proxon_sollwert_freigabe_heizstab_slider:\
-    name: Proxon Freigabetemperatur Heizstab - Slider\
-    min: 40\
-    max: 70\
-    step: 1\
-    \
-input_select:\
-  proxon_betriebsart_select:\
-    name: Proxon Betriebsart - Select\
-    options:\
-      - 'Aus'\
-      - 'Sommerbetrieb'\
-      - 'Winterbetrieb'\
-      - 'ECO Komfortbetrieb'\
-      - 'Ofenbetrieb'\
-    icon: mdi:heat-pump\
-\
-  proxon_luefterstufe_select:\
-    name: Proxon L\'fcfterstufe - Select\
-    options:\
-      - '1'\
-      - '2'\
-      - '3'\
-      - '4'\
-    icon: mdi:fan\
-    \
-template:\
-  - sensor:\
-    - name: 'Proxon Filter Tage'\
-      state: >\
-        \{% set filter_raw = states('sensor.proxon_nutzzeit_fwt_geratefilter') | float %\}\
-        \{\{ (((filter_raw) *2) /24) | round(0) \}\}\
-      unit_of_measurement: "Tage"\
-    - name: "Proxon Filter Resttage"\
-      state: >\
-        \{% set filter_tage = states('sensor.proxon_filter_tage') | float %\}\
-        \{\{ (180 - filter_tage) | round(0) \}\}\
-      unit_of_measurement: "Tage"\
-\
-  - sensor:\
-      name: "Proxon aktueller Betrieb template"\
-      state: >-\
-        \{% set d = \{\
-        '0': 'L\'fcftungsbetrieb', '1': 'Heizbetrieb', \
-        '2': 'K\'fchlbetrieb'\} %\}\
-        \{% if states('sensor.proxon_aktueller_betrieb') in d.keys() %\}\
-          \{\{ d.get(states('sensor.proxon_aktueller_betrieb')) \}\}\
-        \{% else %\}\
-          Unknown\
-        \{% endif %\}}
+#input number
+input_number:
+  proxon_luefterstufe_slider:
+    name: Proxon Lüfterstufe - Slider
+    min: 1
+    max: 4
+    step: 1
+    
+  proxon_sollwert_wassertemperatur_slider:
+    name: Proxon Sollwert Wassertemperatur - Slider
+    min: 40
+    max: 55
+    step: 1
+
+  proxon_sollwert_freigabe_heizstab_slider:
+    name: Proxon Freigabetemperatur Heizstab - Slider
+    min: 40
+    max: 70
+    step: 1
+    
+input_select:
+  proxon_betriebsart_select:
+    name: Proxon Betriebsart - Select
+    options:
+      - 'Aus'
+      - 'Sommerbetrieb'
+      - 'Winterbetrieb'
+      - 'ECO Komfortbetrieb'
+      - 'Ofenbetrieb'
+    icon: mdi:heat-pump
+
+  proxon_luefterstufe_select:
+    name: Proxon Lüfterstufe - Select
+    options:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+    icon: mdi:fan
+    
+template:
+  - sensor:
+    - name: 'Proxon Filter Tage'
+      state: >
+        {% set filter_raw = states('sensor.proxon_nutzzeit_fwt_geratefilter') | float %}
+        {{ (((filter_raw) *2) /24) | round(0) }}
+      unit_of_measurement: "Tage"
+    - name: "Proxon Filter Resttage"
+      state: >
+        {% set filter_tage = states('sensor.proxon_filter_tage') | float %}
+        {{ (180 - filter_tage) | round(0) }}
+      unit_of_measurement: "Tage"
+
+  - sensor:
+      name: "Proxon aktueller Betrieb template"
+      state: >-
+        {% set d = {
+        '0': 'Lüftungsbetrieb', '1': 'Heizbetrieb', 
+        '2': 'Kühlbetrieb'} %}
+        {% if states('sensor.proxon_aktueller_betrieb') in d.keys() %}
+          {{ d.get(states('sensor.proxon_aktueller_betrieb')) }}
+        {% else %}
+          Unknown
+        {% endif %}
