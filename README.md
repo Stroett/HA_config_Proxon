@@ -2,11 +2,13 @@
 
 This is a self made configuration for a Proxon HV-System in HomeAssistant.
 It look like this.
-<img width="1372" alt="image" src="https://github.com/Stroett/HA_config_Proxon/assets/129255114/3ab2e0b7-2ac4-430f-9e1a-8226b5203449">
+<img width="1508" alt="image" src="https://github.com/user-attachments/assets/e3b9f2b5-d835-41ec-a2dc-24f31f6deaee" />
 
 To use this configuration you need to install in addition the AddOns:
 - Template Climate
 - Card-Mod
+- Bubble Card
+- Theme Bubble Card
 from HACS
 
 
