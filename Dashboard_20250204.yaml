@@ -1,0 +1,783 @@
+  - title: Lüftungsanlage
+    icon: mdi:hvac
+    badges: []
+    cards: []
+    type: sections
+    sections:
+      - type: grid
+        cards:
+          - type: custom:vertical-stack-in-card
+            cards:
+              - type: custom:bubble-card
+                card_type: separator
+                name: Betrieb
+                card_layout: normal
+                sub_button:
+                  - entity: sensor.proxon_aktueller_betrieb_template
+                    show_state: true
+                    show_attribute: false
+                    show_name: false
+                    show_icon: false
+                  - entity: sensor.proxon_luftungsstufe_ventilator_zuluft
+                    show_name: false
+                    show_last_changed: false
+                    show_state: true
+                    icon: mdi:fan
+                    state_background: false
+                styles: ''
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    entity: input_select.proxon_betriebsart_select
+                    name: Aus
+                    show_name: true
+                    icon: mdi:hvac-off
+                    color_type: icon
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      target:
+                        entity_id:
+                          - input_select.proxon_betriebsart_select
+                      data:
+                        option: Aus
+                    state:
+                      - value: Aus
+                        color: rgb(80 110 172)
+                    card_mod:
+                      style: |
+                        ha-card {
+                          font-size: 12px !important;
+                          border: none;
+                          margin-top: 10px;
+                        }
+                        .value {
+                          font-size: 12px !important;
+                        }
+                  - type: custom:button-card
+                    entity: input_select.proxon_betriebsart_select
+                    name: Sommer
+                    show_name: true
+                    icon: mdi:white-balance-sunny
+                    color_type: icon
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      target:
+                        entity_id:
+                          - input_select.proxon_betriebsart_select
+                      data:
+                        option: Sommerbetrieb
+                    state:
+                      - value: Sommerbetrieb
+                        color: rgb(80 110 172)
+                    card_mod:
+                      style: |
+                        ha-card {
+                          font-size: 12px !important;
+                          border: none;
+                          margin-top: 10px;
+                        }
+                        .value {
+                          font-size: 12px !important;
+                        }
+                  - type: custom:button-card
+                    entity: input_select.proxon_betriebsart_select
+                    name: Winter
+                    show_name: true
+                    icon: mdi:snowflake
+                    color_type: icon
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      target:
+                        entity_id:
+                          - input_select.proxon_betriebsart_select
+                      data:
+                        option: Winterbetrieb
+                    state:
+                      - value: Winterbetrieb
+                        color: rgb(80 110 172)
+                    card_mod:
+                      style: |
+                        ha-card {
+                          font-size: 12px !important;
+                          border: none;
+                          margin-top: 10px;
+                        }
+                        .value {
+                          font-size: 12px !important;
+                        }
+                  - type: custom:button-card
+                    entity: input_select.proxon_betriebsart_select
+                    name: Eco
+                    show_name: true
+                    icon: mdi:sprout
+                    color_type: icon
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      target:
+                        entity_id:
+                          - input_select.proxon_betriebsart_select
+                      data:
+                        option: ECO Komfortbetrieb
+                    state:
+                      - value: ECO Komfortbetrieb
+                        color: rgb(80 110 172)
+                    card_mod:
+                      style: |
+                        ha-card {
+                          font-size: 12px !important;
+                          border: none;
+                          margin-top: 10px;
+                        }
+                        .value {
+                          font-size: 12px !important;
+                        }
+                  - type: custom:button-card
+                    entity: input_select.proxon_betriebsart_select
+                    name: Ofen
+                    show_name: true
+                    icon: mdi:radiator
+                    color_type: icon
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      target:
+                        entity_id:
+                          - input_select.proxon_betriebsart_select
+                      data:
+                        option: Ofenbetrieb
+                    state:
+                      - value: Ofenbetrieb
+                        color: rgb(80 110 172)
+                    card_mod:
+                      style: |
+                        ha-card {
+                          font-size: 12px !important;
+                          border: none;
+                          margin-top: 10px;
+                        }
+                        .value {
+                          font-size: 12px !important;
+                        }
+              - type: custom:bubble-card
+                card_type: button
+                button_type: state
+                entity: input_number.proxon_luefterstufe_slider
+                show_state: true
+                name: Belüftung
+                scrolling_effect: false
+                icon: mdi:fan
+                force_icon: false
+                sub_button:
+                  - visibility:
+                      - condition: numeric_state
+                        entity: input_number.proxon_luefterstufe_slider
+                        below: 2
+                    show_background: true
+                    show_icon: false
+                    state_background: false
+                    tap_action:
+                      action: none
+                    name: leerer Button Plus
+                  - entity: input_number.proxon_luefterstufe_slider
+                    tap_action:
+                      action: call-service
+                      target:
+                        entity_id: entity
+                      service: input_number.decrement
+                    show_background: true
+                    icon: mdi:minus
+                    state_background: false
+                    visibility:
+                      - condition: numeric_state
+                        entity: input_number.proxon_luefterstufe_slider
+                        above: 1
+                    name: Minus
+                  - entity: input_number.proxon_luefterstufe_slider
+                    tap_action:
+                      action: call-service
+                      target:
+                        entity_id: entity
+                      service: input_number.increment
+                    icon: mdi:plus
+                    state_background: false
+                    visibility:
+                      - condition: numeric_state
+                        entity: input_number.proxon_luefterstufe_slider
+                        below: 4
+                    name: Plus
+                  - visibility:
+                      - condition: numeric_state
+                        entity: input_number.proxon_luefterstufe_slider
+                        above: 3
+                    show_background: true
+                    show_icon: false
+                    state_background: false
+                    tap_action:
+                      action: none
+                    name: leerer Button Plus
+                  - entity: switch.proxon_kuehlung
+                    icon: mdi:snowflake
+                    show_background: true
+                    name: Kühlfreigabe
+                    state_background: false
+                    tap_action:
+                      action: toggle
+                card_layout: normal
+                columns: 3
+                styles: |-
+                  .bubble-sub-button-5 {
+                    color: ${hass.states['switch.proxon_kuehlung'].state == 'off' ?  'red' : 'green'} !important;
+                  }
+            card_mod:
+              style: |
+                ha-card {
+                  padding-right: 8px !important;
+                  padding-left: 8px!important;
+                  padding-bottom: 8px !important;
+                  padding-top: 8px !important;
+                }
+          - type: custom:vertical-stack-in-card
+            cards:
+              - type: custom:bubble-card
+                card_type: separator
+                name: T300
+                card_layout: normal
+                sub_button:
+                  - entity: sensor.proxon_ist_temperatur_wasser
+                    icon: mdi:thermometer
+                    show_state: true
+                    state_background: false
+                  - entity: sensor.proxon_temperatur_wasser_unten
+                    icon: mdi:thermometer-chevron-down
+                    show_state: true
+                    state_background: false
+                styles: ''
+              - type: custom:vertical-stack-in-card
+                cards:
+                  - type: custom:bubble-card
+                    card_type: separator
+                    name: Kompressor
+                    card_layout: normal
+                    sub_button:
+                      - entity: sensor.proxon_soll_temperatur_wasser
+                        icon: mdi:thermometer-lines
+                        show_state: true
+                        state_background: false
+                      - entity: binary_sensor.proxon_kompressor_status
+                        icon: mdi:heat-pump
+                        show_state: true
+                    styles: |-
+                      .bubble-line {
+                          background: var(--ha-card-background); 
+                          }
+                  - type: custom:bubble-card
+                    card_type: separator
+                    card_layout: normal
+                    sub_button:
+                      - name: '40'
+                        show_name: true
+                        tap_action:
+                          action: call-service
+                          service: modbus.write_register
+                          target: {}
+                          data:
+                            hub: proxon
+                            address: 2000
+                            slave: 41
+                            value: 400
+                        show_background: true
+                        show_icon: false
+                        state_background: true
+                        show_state: false
+                      - name: '48'
+                        show_name: true
+                        tap_action:
+                          action: call-service
+                          service: modbus.write_register
+                          target: {}
+                          data:
+                            hub: proxon
+                            address: 2000
+                            slave: 41
+                            value: 480
+                      - name: '50'
+                        show_name: true
+                        tap_action:
+                          action: call-service
+                          service: modbus.write_register
+                          target: {}
+                          data:
+                            hub: proxon
+                            address: 2000
+                            slave: 41
+                            value: 500
+                      - name: '55'
+                        show_name: true
+                        tap_action:
+                          action: call-service
+                          service: modbus.write_register
+                          target: {}
+                          data:
+                            hub: proxon
+                            address: 2000
+                            slave: 41
+                            value: 550
+                    styles: |-
+                      .bubble-sub-button {
+                        background-color: rgb(91 83 104) !important;
+                      }
+                      .bubble-line {
+                        background: var(--ha-card-background); 
+                      }
+              - type: custom:bubble-card
+                card_type: separator
+                styles: |-
+                  .bubble-line {
+                      background: var(--ha-card-background); 
+                      }
+              - type: custom:vertical-stack-in-card
+                cards:
+                  - type: custom:bubble-card
+                    card_type: separator
+                    name: Heizstab
+                    card_layout: normal
+                    sub_button:
+                      - entity: sensor.proxon_heizstab_temperatur
+                        icon: mdi:thermometer-lines
+                        show_state: true
+                        state_background: false
+                      - entity: binary_sensor.proxon_heizstab_status
+                        icon: mdi:heating-coil
+                        show_state: true
+                    styles: |-
+                      .bubble-line {
+                          background: var(--ha-card-background); 
+                          }
+                  - type: custom:bubble-card
+                    card_type: separator
+                    card_layout: normal
+                    sub_button:
+                      - entity: switch.proxon_heizstab
+                        name: Heizstabfreigabe
+                        show_name: false
+                        tap_action:
+                          action: toggle
+                        icon: mdi:send-check-outline
+                        state_background: false
+                        show_state: false
+                        show_background: false
+                      - name: '42'
+                        show_name: true
+                        tap_action:
+                          action: call-service
+                          service: modbus.write_register
+                          target: {}
+                          data:
+                            hub: proxon
+                            address: 2003
+                            slave: 41
+                            value: 420
+                        show_background: true
+                        show_icon: false
+                        state_background: true
+                        show_state: false
+                      - name: '45'
+                        show_name: true
+                        tap_action:
+                          action: call-service
+                          service: modbus.write_register
+                          target: {}
+                          data:
+                            hub: proxon
+                            address: 2003
+                            slave: 41
+                            value: 450
+                      - name: '55'
+                        show_name: true
+                        tap_action:
+                          action: call-service
+                          service: modbus.write_register
+                          target: {}
+                          data:
+                            hub: proxon
+                            address: 2003
+                            slave: 41
+                            value: 550
+                      - name: '65'
+                        show_name: true
+                        tap_action:
+                          action: call-service
+                          service: modbus.write_register
+                          target: {}
+                          data:
+                            hub: proxon
+                            address: 2003
+                            slave: 41
+                            value: 650
+                    styles: |-
+                      .bubble-sub-button {
+                        background-color: rgb(91 83 104) !important;
+                      }
+                      .bubble-line {
+                        background: var(--ha-card-background); 
+                      }
+                      .bubble-sub-button-1 {
+                        color: ${hass.states['switch.proxon_heizstab'].state == 'off' ?  'red' : 'green'} !important;
+                      }
+            card_mod:
+              style: |
+                ha-card {
+                  padding-right: 8px !important;
+                  padding-left: 8px!important;
+                  padding-bottom: 8px !important;
+                  padding-top: 8px !important;
+                }
+          - type: custom:vertical-stack-in-card
+            cards:
+              - type: custom:bubble-card
+                card_type: separator
+                name: Sonstige
+                sub_button:
+                  - entity: sensor.proxon_luftfeuchte_wohnzimmer
+                    name: Luftfeuchte
+                    state_background: false
+                    show_icon: true
+                    show_name: false
+                    show_state: true
+                  - entity: sensor.proxon_co2_wohnzimmer
+                    show_state: true
+                    state_background: false
+                    show_background: false
+                styles: ''
+              - type: heading
+                icon: mdi:filter-variant
+                heading: Filter
+                heading_style: subtitle
+                badges:
+                  - type: entity
+                    show_state: true
+                    show_icon: false
+                    entity: sensor.proxon_filter_tage
+                    name: Nutzung
+                    state_content:
+                      - name
+                      - state
+                  - type: entity
+                    show_state: true
+                    show_icon: false
+                    entity: sensor.proxon_filter_resttage
+                    name: /  Resttage
+                    state_content:
+                      - name
+                      - state
+              - show_name: true
+                show_icon: false
+                show_state: true
+                type: glance
+                entities:
+                  - entity: sensor.proxon_temperatur_zuluft
+                    card_mod:
+                      style: |
+                        :host {}
+                        .name {text-decoration: underline}
+                  - entity: sensor.proxon_temperatur_abluft
+                    card_mod:
+                      style: |
+                        :host {}
+                        .name {text-decoration: underline}
+                  - entity: sensor.proxon_temperatur_frischluft
+                    card_mod:
+                      style: |
+                        :host {}
+                        .name {text-decoration: underline}
+                  - entity: sensor.proxon_temperatur_fortluft
+                    card_mod:
+                      style: |
+                        :host {}
+                        .name {text-decoration: underline}
+                state_color: false
+                columns: 4
+              - type: custom:bubble-card
+                card_type: button
+                button_type: state
+                entity: sensor.proxon_intensivluftung_restzeit
+                name: Intensivlüftung
+                icon: mdi:fan-alert
+                sub_button:
+                  - show_background: true
+                    icon: mdi:stop
+                    name: Intensivlüftung stoppen
+                    tap_action:
+                      action: perform-action
+                      perform_action: automation.trigger
+                      target:
+                        entity_id: automation.intensivluftung_ausschalten
+                      data:
+                        skip_condition: true
+                    visibility:
+                      - condition: state
+                        entity: sensor.proxon_intensivluftung_restzeit
+                        state_not: '0'
+                    state_background: false
+                  - visibility:
+                      - condition: state
+                        entity: sensor.proxon_intensivluftung_restzeit
+                        state_not: '0'
+                    show_background: false
+                    show_icon: false
+                    name: Platzhalter
+                  - name: Intensivlüftung starten 15min
+                    icon: mdi:fast-forward-15
+                    tap_action:
+                      action: perform-action
+                      perform_action: automation.trigger
+                      target:
+                        entity_id: automation.intensivluftung_15min
+                      data:
+                        skip_condition: true
+                    visibility:
+                      - condition: state
+                        entity: sensor.proxon_intensivluftung_restzeit
+                        state: '0'
+                  - name: Intensivlüftung starten 30min
+                    icon: mdi:fast-forward-30
+                    tap_action:
+                      action: perform-action
+                      perform_action: automation.trigger
+                      target:
+                        entity_id: automation.intensivluftung_30min
+                      data:
+                        skip_condition: true
+                    visibility:
+                      - condition: state
+                        entity: sensor.proxon_intensivluftung_restzeit
+                        state: '0'
+                  - name: Intensivlüftung starten 60min
+                    icon: mdi:fast-forward-60
+                    tap_action:
+                      action: perform-action
+                      perform_action: automation.trigger
+                      target:
+                        entity_id: automation.intensivluftung_60min
+                      data:
+                        skip_condition: true
+                    visibility:
+                      - condition: state
+                        entity: sensor.proxon_intensivluftung_restzeit
+                        state: '0'
+                show_state: false
+                styles: |-
+                  :host{
+                      --color-ok-icon: green ;
+                      --color-warning-icon: orange ;
+                      --color-alert-icon: red ;
+                      --color-ok: #85A408AA ;
+                      --color-warning: #E77910AA ;
+                      --color-alert: #CA3333AA ;
+                      --color-background: var(--bubble-button-main-background-color, var(--bubble-main-background-color, var(--background-color-2, var(--secondary-background-color))));
+                      --color-notification-bubble: red;
+                  }
+                  ha-card::after {
+                    position: absolute;
+                    top: -10px;
+                    right: -10px;
+                    padding: 0 10px;
+                    border-radius: 999px;
+                    border: 0px solid black;
+                    color: #fff;
+                    content: "${Math.round(state) == 0 ? '' : Math.round(state)}" "${Math.round(state) == 0 ? '' : 'min'}";
+                    background: var(--color-notification-bubble);
+                    display: block;
+                  }
+            card_mod:
+              style: |
+                ha-card {
+                  padding-right: 8px !important;
+                  padding-left: 8px!important;
+                  padding-bottom: 8px !important;
+                  padding-top: 8px !important;
+                }
+      - type: grid
+        cards:
+          - type: custom:vertical-stack-in-card
+            cards:
+              - type: custom:bubble-card
+                card_type: separator
+                name: Temperaturen
+                sub_button:
+                  - entity: sensor.proxon_temperatur_frischluft
+                    name: Außentemperatur
+                    show_icon: false
+                    show_name: true
+                    show_state: true
+                    state_background: false
+              - type: custom:bubble-card
+                card_type: climate
+                entity: climate.proxon_template_heizung_wohnzimmer
+                sub_button:
+                  - entity: switch.proxon_heizelemente_global
+                    icon: mdi:heat-wave
+                    name: Freigabe-Heizelemente
+                    show_background: true
+                    state_background: false
+                  - name: HVAC modes menu
+                    select_attribute: hvac_modes
+                    state_background: false
+                    show_arrow: false
+                name: Wohnzimmer
+                show_state: false
+                attribute: current_temperature
+                show_attribute: true
+                styles: |-
+                  .bubble-color-background{
+                    background: ${hass.states['binary_sensor.proxon_heizelement_status_wohnzimmer'].state == 'on' ? 'red' : ''} !important;
+                  }
+                  .bubble-sub-button-1 {
+                    color: ${hass.states['switch.proxon_heizelemente_global'].state == 'off' ?  'red' : 'green'} !important;
+                  }
+              - type: custom:bubble-card
+                card_type: climate
+                entity: climate.proxon_template_heizung_eg_flur
+                sub_button:
+                  - entity: switch.proxon_tastensperre_flur
+                    icon: mdi:lock
+                    show_name: false
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                  - name: HVAC modes menu
+                    select_attribute: hvac_modes
+                    state_background: false
+                    show_arrow: false
+                name: Flur
+                show_state: false
+                attribute: current_temperature
+                show_attribute: true
+                styles: |-
+                  .bubble-color-background{
+                    background: ${hass.states['binary_sensor.proxon_heizelement_status_flur'].state == 'on' ? 'red' : ''} !important;
+                  }
+              - type: custom:bubble-card
+                card_type: climate
+                entity: climate.proxon_template_heizung_buero
+                sub_button:
+                  - entity: switch.proxon_tastensperre_buero
+                    icon: mdi:lock
+                    show_name: false
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                  - name: HVAC modes menu
+                    select_attribute: hvac_modes
+                    state_background: false
+                    show_arrow: false
+                name: Büro
+                show_state: false
+                attribute: current_temperature
+                show_attribute: true
+                styles: |-
+                  .bubble-color-background{
+                    background: ${hass.states['binary_sensor.proxon_heizelement_status_buero'].state == 'on' ? 'red' : ''} !important;
+                  }
+              - type: custom:bubble-card
+                card_type: climate
+                entity: climate.proxon_template_heizung_schlafzimmer
+                sub_button:
+                  - entity: switch.proxon_tastensperre_schlafzimmer
+                    icon: mdi:lock
+                    show_name: false
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                  - name: HVAC modes menu
+                    select_attribute: hvac_modes
+                    state_background: false
+                    show_arrow: false
+                name: Schlafzimmer
+                show_state: false
+                show_attribute: true
+                attribute: current_temperature
+                styles: |-
+                  .bubble-color-background{
+                    background: ${hass.states['binary_sensor.proxon_heizelement_status_schlafzimmer'].state == 'on' ? 'red' : ''} !important;
+                  }
+              - type: custom:bubble-card
+                card_type: climate
+                entity: climate.proxon_template_heizung_lean
+                sub_button:
+                  - entity: switch.proxon_tastensperre_lean
+                    icon: mdi:lock
+                    show_name: false
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                  - name: HVAC modes menu
+                    select_attribute: hvac_modes
+                    state_background: false
+                    show_arrow: false
+                name: Lean
+                show_state: false
+                attribute: current_temperature
+                show_attribute: true
+                styles: |-
+                  .bubble-color-background{
+                    background: ${hass.states['binary_sensor.proxon_heizelement_status_lean'].state == 'on' ? 'red' : ''} !important;
+                  }
+              - type: custom:bubble-card
+                card_type: climate
+                entity: climate.proxon_template_heizung_eline
+                sub_button:
+                  - entity: switch.proxon_tastensperre_eline
+                    icon: mdi:lock
+                    show_name: false
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                  - name: HVAC modes menu
+                    select_attribute: hvac_modes
+                    state_background: false
+                    show_arrow: false
+                name: Eline
+                show_state: false
+                show_attribute: true
+                attribute: current_temperature
+                styles: |-
+                  .bubble-color-background{
+                    background: ${hass.states['binary_sensor.proxon_heizelement_status_eline'].state == 'on' ? 'red' : ''} !important;
+                  }
+              - type: custom:bubble-card
+                card_type: climate
+                entity: climate.proxon_template_heizung_hobbyraum
+                sub_button:
+                  - entity: switch.proxon_tastensperre_hobbyraum
+                    icon: mdi:lock
+                    show_name: false
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                  - name: HVAC modes menu
+                    select_attribute: hvac_modes
+                    state_background: false
+                    show_arrow: false
+                name: Hobbyraum
+                show_state: false
+                show_attribute: true
+                attribute: current_temperature
+                styles: |-
+                  .bubble-color-background{
+                    background: ${hass.states['binary_sensor.proxon_heizelement_status_hobbyraum'].state == 'on' ? 'red' : ''} !important;
+                  }
+            card_mod:
+              style: |
+                ha-card {
+                  padding-right: 8px !important;
+                  padding-left: 8px!important;
+                  padding-bottom: 8px !important;
+                  padding-top: 8px !important;
+                }
+    max_columns: 4
+    theme: Bubble
