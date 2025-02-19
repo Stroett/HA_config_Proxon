@@ -65,3 +65,32 @@ template:
         {% else %}
           Unknown
         {% endif %}
+
+  - binary_sensor:
+    - name: Proxon Heizelement Status Wohnzimmer
+      state: "{% if states('sensor.proxon_heizelement_status') | int | bitwise_and(1) %}on{% else %}off{% endif %}"
+      unique_id: proxon_heizelement_status_Wohnzimmer
+
+    - name: Proxon Heizelement Status Flur
+      state: "{% if states('sensor.proxon_heizelement_status') | int | bitwise_and(2) %}on{% else %}off{% endif %}"
+      unique_id: proxon_heizelement_status_Flur
+
+    - name: Proxon Heizelement Status Buero
+      state: "{% if states('sensor.proxon_heizelement_status') | int | bitwise_and(4) %}on{% else %}off{% endif %}"
+      unique_id: proxon_heizelement_status_Buero
+
+    - name: Proxon Heizelement Status Schlafzimmer
+      state: "{% if states('sensor.proxon_heizelement_status') | int | bitwise_and(8) %}on{% else %}off{% endif %}"
+      unique_id: proxon_heizelement_status_Schlafzimmer
+
+    - name: Proxon Heizelement Status Eline
+      state: "{% if states('sensor.proxon_heizelement_status') | int | bitwise_and(16) %}on{% else %}off{% endif %}"
+      unique_id: proxon_heizelement_status_Eline
+
+    - name: Proxon Heizelement Status Lean
+      state: "{% if states('sensor.proxon_heizelement_status') | int | bitwise_and(32) %}on{% else %}off{% endif %}"
+      unique_id: proxon_heizelement_status_Lean
+      
+    - name: Proxon Heizelement Status Hobbyraum
+      state: "{% if states('sensor.proxon_heizelement_status') | int | bitwise_and(64) %}on{% else %}off{% endif %}"
+      unique_id: proxon_heizelement_status_hobbyraum
